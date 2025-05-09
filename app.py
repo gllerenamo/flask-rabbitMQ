@@ -4,8 +4,10 @@ from time import sleep
 
 app = Flask(__name__)
 
+AMQP_URL = 'amqps://jimozaxw:j7N6AWzsgQ0VM50C6en3mctoX_QrN_iD@duck.lmq.cloudamqp.com/jimozaxw'
+
 # Instancia del cliente RPC
-rpc_client = RpcClient('localhost', 'guest', 'guest', 'translate_queue')
+rpc_client = RpcClient(AMQP_URL, 'translate_queue')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():

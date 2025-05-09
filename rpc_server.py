@@ -1,5 +1,21 @@
 import amqpstorm
 from deep_translator import GoogleTranslator
+from urllib.parse import urlparse, unquote
+import ssl
+import time
+
+AMQP_URL = "amqps://jimozaxw:j7N6AWzsgQ0VM50C6en3mctoX_QrN_iD@duck.lmq.cloudamqp.com/jimozaxw"
+
+def parse_amqp_url(url):
+    parsed = urlparse(url)
+    return {
+        'host': parsed.hostname,
+        'port': parsed.port or 5671,
+        'username': parsed.username,
+        'password': parsed.password,
+        'virtual_host': unquote(parsed.path[1:]),
+    }
+
 
 def on_request(message):
     cuerpo = message.body
@@ -27,7 +43,16 @@ def on_request(message):
     message.ack()
 
 def main():
-    connection = amqpstorm.Connection('localhost', 'guest', 'guest')
+    cfg = parse_amqp_url(AMQP_URL)
+    connection = amqpstorm.Connection(
+        hostname=cfg['host'],
+        username=cfg['username'],
+        password=cfg['password'],
+        port=cfg['port'],
+        virtual_host=cfg['virtual_host'],
+        ssl=True,
+        heartbeat=30
+    )
     channel = connection.channel()
 
     channel.queue.declare('translate_queue')
@@ -39,6 +64,15 @@ def main():
     except KeyboardInterrupt:
         print("Interrupción del servidor.")
         connection.close()
+        exit(0)
 
 if __name__ == '__main__':
-    main()
+    while True:
+        try:
+            main()
+        except amqpstorm.AMQPConnectionError as e:
+            print(f"Error de conexión: {e}. Reintentando en 5 segundos...")
+            time.sleep(5)
+        except Exception as e:
+            print(f"Error inesperado: {e}. Reintentando en 5 segundos...")
+            time.sleep(5)
