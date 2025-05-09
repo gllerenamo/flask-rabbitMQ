@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traductor Masivo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h2 {
+            color: #4CAF50;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        select, input[type="submit"] {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Traductor Masivo Asíncrono</h2>
+    <form method="POST">
+        <label for="texto">Texto a Traducir:</label>
+        <textarea id="texto" name="texto" required>{{ texto_original }}</textarea>
+        
+        <label for="idioma_origen">Selecciona el idioma de origen:</label>
+        <select id="idioma_origen" name="idioma_origen">
+            <option value="auto" {% if idioma_origen == 'auto' %}selected{% endif %}>Detectar automáticamente</option>
+            <option value="es" {% if idioma_origen == 'es' %}selected{% endif %}>Español</option>
+            <option value="en" {% if idioma_origen == 'en' %}selected{% endif %}>Inglés</option>
+            <option value="fr" {% if idioma_origen == 'fr' %}selected{% endif %}>Francés</option>
+            <option value="de" {% if idioma_origen == 'de' %}selected{% endif %}>Alemán</option>
+            <option value="it" {% if idioma_origen == 'it' %}selected{% endif %}>Italiano</option>
+        </select>
+
+        <label for="idioma">Selecciona el idioma de destino:</label>
+        <select id="idioma" name="idioma">
+            <option value="es" {% if idioma == 'es' %}selected{% endif %}>Español</option>
+            <option value="en" {% if idioma == 'en' %}selected{% endif %}>Inglés</option>
+            <option value="fr" {% if idioma == 'fr' %}selected{% endif %}>Francés</option>
+            <option value="de" {% if idioma == 'de' %}selected{% endif %}>Alemán</option>
+            <option value="it" {% if idioma == 'it' %}selected{% endif %}>Italiano</option>
+            <option value="pt" {% if idioma == 'pt' %}selected{% endif %}>Portugués</option>
+        </select>
+        
+        <input type="submit" value="Traducir">
+    </form>
+
+    {% if resultado %}
+        <div class="resultado">
+            <h3>Texto Original:</h3>
+            <p>{{ texto_original }}</p>
+            <h3>Traducción:</h3>
+            <p>{{ resultado }}</p>
+        </div>
+    {% endif %}
+
+</body>
+</html>
