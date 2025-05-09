@@ -3,8 +3,9 @@ from deep_translator import GoogleTranslator
 from urllib.parse import urlparse, unquote
 import ssl
 import time
+import os
 
-AMQP_URL = "amqps://jimozaxw:j7N6AWzsgQ0VM50C6en3mctoX_QrN_iD@duck.lmq.cloudamqp.com/jimozaxw"
+AMQP_URL = os.environ.get('AMQP_URL')
 
 def parse_amqp_url(url):
     parsed = urlparse(url)
