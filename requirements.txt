@@ -6,11 +6,13 @@ charset-normalizer==3.4.2
 click==8.1.8
 deep-translator==1.11.4
 Flask==3.0.3
+gunicorn==23.0.0
 idna==3.10
 importlib_metadata==8.5.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==2.1.5
+packaging==25.0
 pamqp==2.3.0
 requests==2.32.3
 soupsieve==2.7
